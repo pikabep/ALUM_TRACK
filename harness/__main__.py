@@ -34,7 +34,8 @@ def main() -> None:
     r.add_argument("--when-cmd", help="start when this command exits 0 (polled)")
     r.add_argument("--no-app", action="store_true", help="do not start the companion app")
     a = sub.add_parser("app", help="companion chat app")
-    a.add_argument("--port", type=int, default=7777)
+    a.add_argument("--port", type=int, default=int(os.environ.get("PORT", 7777)))  # Render sets PORT
+    a.add_argument("--host", default=os.environ.get("HOST", "127.0.0.1"))  # 0.0.0.0 on a server
     a.add_argument("--no-open", action="store_true")
     sub.add_parser("serve")
     sub.add_parser("doctor")
@@ -50,7 +51,7 @@ def main() -> None:
         agent = build_agent(cfg)
         serve_telegram(lambda task, skill: _summary(agent.run(task, skill)))
     elif args.cmd == "app":
-        app = _start_app(cfg, port=args.port, open_browser=not args.no_open)
+        app = _start_app(cfg, port=args.port, open_browser=not args.no_open, host=args.host)
         app.start_worker()
         try:
             while True:
@@ -108,7 +109,8 @@ def _keep_awake() -> None:
         subprocess.Popen(["caffeinate", "-dimsw", str(os.getpid())])
 
 
-def _start_app(cfg: dict, port: int = 7777, open_browser: bool = True, countdown_to: str | None = None):
+def _start_app(cfg: dict, port: int = 7777, open_browser: bool = True, countdown_to: str | None = None,
+               host: str = "127.0.0.1"):
     from .bus import EventBus
     from .inbox import Inbox
     from .server import App, WebChannel, readiness, serve
@@ -120,7 +122,7 @@ def _start_app(cfg: dict, port: int = 7777, open_browser: bool = True, countdown
     app = App(bus, channel, inbox, lambda: build_agent(cfg, bus=bus, inbox=inbox, channels=[channel]),
               countdown_to=target, checks=lambda: readiness(cfg))
     try:
-        serve(app, runs, port=port, open_browser=open_browser and not os.environ.get("NO_BROWSER"))
+        serve(app, runs, host=host, port=port, open_browser=open_browser and not os.environ.get("NO_BROWSER"))
     except OSError as e:
         print(f"[!!] companion app could not start on port {port}: {e}. Continuing without it.", flush=True)
     return app

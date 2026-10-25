@@ -41,14 +41,17 @@ def build_agent(cfg: dict, bus=None, inbox=None, channels: list | None = None):
     from .loop import Agent
 
     b, a = cfg.get("browser", {}), cfg.get("agent", {})
+    server = os.environ.get("HARNESS_HEADLESS") == "1"
     handoff = Handoff.default()
     handoff.channels = list(channels or []) + handoff.channels  # the app first; terminal/Telegram mirror it
     hands = Hands(
         shell=ShellHand(confirm=lambda q: handoff.approve(q)),
         files=FileHand(),
         browser=BrowserHand(profile_dir=b.get("profile_dir", "~/.harness/browser-profile"),
-                            channel=b.get("channel") or None, cdp_url=b.get("cdp_url") or None,
-                            headless=b.get("headless", False),
+                            # HARNESS_HEADLESS=1 (servers such as Render): bundled Chromium, no window
+                            channel=None if server else (b.get("channel") or None),
+                            cdp_url=b.get("cdp_url") or None,
+                            headless=server or b.get("headless", False),
                             downloads_dir=Path(a.get("runs_dir", "runs")) / "downloads"),
         desktop=DesktopHand(),
     )

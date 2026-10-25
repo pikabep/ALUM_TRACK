@@ -1,0 +1,16 @@
+# Render Blueprint: New > Blueprint > pick this repo. Secrets are entered in the dashboard, never committed.
+services:
+  - type: web
+    name: skilled-hands
+    runtime: docker
+    plan: starter            # free also works, but it sleeps after 15 min idle and has 512 MB (tight for Chromium)
+    healthCheckPath: /
+    envVars:
+      - key: APP_TOKEN       # the app URL is https://<service>.onrender.com/#<APP_TOKEN>
+        generateValue: true
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
