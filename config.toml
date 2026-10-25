@@ -1,0 +1,36 @@
+# Models are tried in order; a rate-limited or failing provider hands the step to the next.
+# All of these have free tiers. Keys go in .env (see .env.example).
+[models]
+chain = ["gemini", "gemini_lite", "groq", "openrouter"]
+
+# Measured 2026-10-25 on the free tier: 3.5-flash ~3s, 3.5-flash-lite ~1.6s,
+# while gemini-flash-latest / 3.7 / 3.8 hung for 60-90s. `python -m harness doctor` re-checks.
+[models.gemini]
+model = "gemini-3.5-flash"
+
+[models.gemini_lite]
+preset = "gemini"
+model = "gemini-3.5-flash-lite"
+
+[models.groq]
+model = "meta-llama/llama-4-scout-17b-16e-instruct"
+
+[models.openrouter]
+model = "google/gemma-4-31b-it:free"
+
+[browser]
+channel = "chrome"                   # "chrome" = your installed Google Chrome (recommended for IRCTC)
+profile_dir = "~/.harness/browser-profile"
+headless = false
+
+[agent]
+max_steps = 60
+state_dir = "state"
+runs_dir = "runs"
+skills_dir = "skills"
+
+[ui]
+countdown_to = "11:00:00"            # what the countdown card counts down to (overridden by run --at)
+
+# [safety]                           # payment gate patterns (regex); defaults live in harness/loop.py
+# payment_url = "pay|checkout|gateway|billdesk|razorpay|paytm|ipay|upi|netbank|bank"

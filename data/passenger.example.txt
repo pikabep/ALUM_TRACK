@@ -1,0 +1,20 @@
+Passenger (fill exactly as on the ID card; copy this file to data/passenger.txt)
+Name: FULL NAME AS ON ID
+Age: 21
+Gender: Male
+Nationality: India
+Berth preference: No Preference
+Food: n/a
+
+Booking
+From: ROORKEE - RK
+To: HARIDWAR JN - HW
+Quota: TATKAL
+Journey date: tomorrow
+Book only if confirmed berths: yes
+Auto upgrade: no
+Allow waitlist or RAC: no
+
+Payment
+Method: BHIM/UPI            (or: irctc_wallet)
+UPI ID (VPA): name@bank

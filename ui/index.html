@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skilled Hands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+:root {
+  --bg: #EEF2E6; --surface: #FFFFFF; --ink: #17251F; --muted: #55635C;
+  --yellow: #FFDF6B; --mint: #D3E8DA; --pink: #F8CAD6; --blue: #C3DEF3; --coral: #FF6B4D; --green: #2E7D5B;
+  --line: 2.5px solid var(--ink); --shadow: 5px 5px 0 var(--ink); --r: 18px;
+  --sans: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif; --mono: "JetBrains Mono", Consolas, monospace;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.45 var(--sans); }
+button { font: inherit; color: inherit; cursor: pointer; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 16px; height: 100%; display: flex; flex-direction: column; gap: 16px; }
+
+/* header */
+header { display: flex; align-items: center; gap: 12px; background: var(--surface); border: var(--line);
+  border-radius: 999px; padding: 8px 10px 8px 16px; box-shadow: var(--shadow); }
+.logo { width: 28px; height: 28px; border-radius: 8px; background: var(--yellow); border: var(--line);
+  display: grid; place-items: center; }
+.brand { font-weight: 800; font-size: 17px; }
+.pill { margin-left: auto; display: flex; align-items: center; gap: 8px; background: var(--ink); color: #fff;
+  border-radius: 999px; padding: 7px 16px; font-weight: 600; font-size: 14px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; background: #9BE3B8; }
+.pill.busy .dot { background: var(--yellow); }
+.pill.ask { background: var(--coral); color: var(--ink); border: 2px solid var(--ink); }
+.pill.ask .dot { background: var(--ink); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: .3; } }
+
+/* layout */
+main { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 16px; }
+.card { background: var(--surface); border: var(--line); border-radius: var(--r); box-shadow: var(--shadow); }
+.side { display: flex; flex-direction: column; gap: 16px; min-height: 0; }
+h2 { font-size: 22px; font-weight: 800; margin: 0 0 10px; letter-spacing: -.01em; }
+
+/* chat */
+.chat { display: flex; flex-direction: column; min-height: 0; padding: 18px; }
+.log { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 4px 6px 12px 2px; }
+.msg { display: flex; gap: 8px; align-items: flex-start; max-width: 88%; }
+.av { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--green); color: #fff; border: 2px solid var(--ink);
+  display: grid; place-items: center; font-size: 12px; font-weight: 800; }
+.bubble { background: var(--mint); border: 2px solid var(--ink); border-radius: 12px; padding: 8px 12px; }
+.msg.me { align-self: flex-end; }
+.msg.me .bubble { background: var(--ink); color: #fff; }
+.msg.quiet .bubble { background: transparent; border-style: dashed; color: var(--muted); }
+.composer { display: flex; gap: 8px; align-items: center; border: var(--line); border-radius: 999px; padding: 5px 5px 5px 18px; }
+.composer input { flex: 1; border: 0; outline: 0; font: inherit; background: transparent; color: var(--ink); min-width: 0; }
+.send { border: 0; background: var(--ink); color: #fff; border-radius: 999px; padding: 8px 16px; font-weight: 600; }
+.chips { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 10px; }
+.chip { border: 2px solid var(--ink); background: var(--surface); border-radius: 999px; padding: 4px 12px; font-size: 13px; font-weight: 600; }
+.chip.y { background: var(--yellow); }
+
+/* cards in the chat */
+.box { border: var(--line); border-radius: 14px; padding: 14px; box-shadow: 4px 4px 0 var(--ink); max-width: 100%; }
+.ask { background: var(--pink); }
+.ask p, .ticket p { margin: 0 0 10px; white-space: pre-wrap; }
+.ask img, .done img { display: block; max-width: 100%; border: 2px solid var(--ink); border-radius: 10px; margin: 0 0 10px; cursor: zoom-in; }
+.btns { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn { border: 2px solid var(--ink); background: var(--surface); border-radius: 999px; padding: 7px 16px; font-weight: 600; }
+.btn.go { background: var(--green); color: #fff; }
+.btn:disabled { opacity: .45; cursor: default; }
+.ticket { display: grid; grid-template-columns: 1fr 150px; background: var(--surface); padding: 0; overflow: hidden; }
+.ticket .main { padding: 14px 16px; }
+.ticket .stub { border-left: 2.5px dashed var(--ink); padding: 14px 12px; display: flex; flex-direction: column; gap: 10px;
+  align-items: center; justify-content: flex-start; background: var(--yellow); }
+.kicker { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-bottom: 2px; }
+.facts { font: 13px/1.5 var(--mono); white-space: pre-wrap; max-height: 210px; overflow: auto; margin: 0; }
+.bars { height: 34px; width: 100%; background: repeating-linear-gradient(90deg, var(--ink) 0 2px, transparent 2px 5px, var(--ink) 5px 6px, transparent 6px 9px); }
+.pnr { font: 700 30px/1.1 var(--mono); letter-spacing: .04em; margin: 4px 0 8px; }
+.done.fail { background: var(--coral); }
+.receipt { color: var(--muted); font-size: 13px; }
+
+/* countdown */
+.count { background: var(--yellow); padding: 18px; }
+.flip { display: flex; align-items: center; gap: 8px; }
+.digit { background: var(--surface); border: var(--line); border-radius: 12px; font: 700 34px/1 var(--mono);
+  padding: 10px 10px; min-width: 66px; text-align: center; position: relative; }
+.digit::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid var(--bg); }
+.colon { font: 700 28px var(--mono); }
+.ready { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; }
+.ready .ok { display: flex; align-items: center; gap: 6px; font-weight: 600; }
+.ready .ok::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--green); }
+.ready .bad { background: var(--surface); border: 2px solid var(--ink); border-radius: 999px; padding: 2px 10px; cursor: help; }
+
+/* live view */
+.live { background: var(--blue); padding: 18px; flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.screen { flex: 1; min-height: 120px; border: var(--line); border-radius: 12px; background: var(--surface) center/contain no-repeat;
+  cursor: zoom-in; }
+.screen.empty { display: grid; place-items: center; color: var(--muted); cursor: default; }
+.now { margin: 12px 0 0; font-weight: 600; }
+.track { margin-top: 10px; height: 12px; border: 2px solid var(--ink); border-radius: 999px; background: var(--surface); overflow: hidden; display: none; }
+.track i { display: block; height: 100%; width: 30%; background: var(--green); border-radius: 999px; animation: ride 2.6s ease-in-out infinite; }
+.live.waiting .track { display: block; }
+@keyframes ride { 0% { transform: translateX(-100%); } 100% { transform: translateX(340%); } }
+.row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+.meta { font-size: 13px; color: var(--muted); }
+.row .btn { margin-left: auto; padding: 4px 12px; font-size: 13px; }
+
+/* zoom */
+dialog { border: var(--line); border-radius: var(--r); padding: 0; max-width: 92vw; box-shadow: var(--shadow); }
+dialog img { display: block; max-width: 92vw; max-height: 88vh; }
+dialog::backdrop { background: rgba(23, 37, 31, .5); }
+
+@media (max-width: 860px) {
+  main { grid-template-columns: 1fr; }
+  .side { order: -1; }
+  .live { min-height: 260px; }
+  .ticket { grid-template-columns: 1fr; }
+  .ticket .stub { border-left: 0; border-top: 2.5px dashed var(--ink); }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo" aria-hidden="true">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#17251F" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M9 21l-2-4M15 21l2-4"/><circle cx="9" cy="14" r=".5"/><circle cx="15" cy="14" r=".5"/></svg>
+    </div>
+    <span class="brand">Skilled Hands</span>
+    <span class="pill" id="pill"><span class="dot"></span><span id="pillText">Connecting…</span></span>
+  </header>
+
+  <main>
+    <section class="card chat">
+      <h2>Talk to Guard</h2>
+      <div class="log" id="log" aria-live="polite"></div>
+      <div class="chips" id="chips"></div>
+      <form class="composer" id="form">
+        <input id="input" autocomplete="off" placeholder="Message Guard…" aria-label="Message Guard">
+        <button class="send" type="submit">Send</button>
+      </form>
+    </section>
+
+    <aside class="side">
+      <section class="card count">
+        <div class="kicker" id="countLabel">Tatkal opens in</div>
+        <div class="flip" aria-live="off">
+          <div class="digit" id="hh">00</div><span class="colon">:</span>
+          <div class="digit" id="mm">00</div><span class="colon">:</span>
+          <div class="digit" id="ss">00</div>
+        </div>
+        <div class="ready" id="ready"></div>
+      </section>
+
+      <section class="card live" id="live">
+        <h2>What I see</h2>
+        <div class="screen empty" id="screen">Nothing open yet</div>
+        <p class="now" id="now">Waiting for a task.</p>
+        <div class="track" aria-hidden="true"><i></i></div>
+        <div class="row"><span class="meta" id="meta"></span><button class="btn" id="stop" hidden>Stop</button></div>
+      </section>
+    </aside>
+  </main>
+</div>
+<dialog id="zoom"><img id="zoomImg" alt="Screenshot"></dialog>
+
+<script>
+const token = location.hash.slice(1);
+const $ = id => document.getElementById(id);
+const log = $("log");
+const TASK = "Book the cheapest Tatkal ticket from Roorkee to Haridwar for tomorrow for the passenger in data/passenger.txt";
+let running = false, pending = null, countdownTo = "11:00:00", lastSay = "", stepCount = 0;
+const asks = {};
+
+function esc(s) { return String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+function atBottom() { return log.scrollHeight - log.scrollTop - log.clientHeight < 80; }
+function add(node) { const stick = atBottom(); log.appendChild(node); if (stick) log.scrollTop = log.scrollHeight; return node; }
+function el(html) { const t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstChild; }
+
+function guard(text, quiet) {
+  if (!text || text === lastSay) return;
+  lastSay = text;
+  add(el(`<div class="msg${quiet ? " quiet" : ""}"><div class="av">G</div><div class="bubble">${esc(text)}</div></div>`));
+}
+function me(text) { add(el(`<div class="msg me"><div class="bubble">${esc(text)}</div></div>`)); }
+
+function send(text, cmd = "send") {
+  return fetch("/api/command", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ token, cmd, text }) });
+}
+
+function setPill(state, text) {
+  $("pill").className = "pill" + (state === "busy" ? " busy" : state === "ask" ? " ask" : "");
+  $("pillText").textContent = text;
+}
+
+function chips() {
+  const c = $("chips"); c.innerHTML = "";
+  const chip = (label, fn, y) => { const b = el(`<button class="chip${y ? " y" : ""}" type="button">${esc(label)}</button>`); b.onclick = fn; c.appendChild(b); };
+  if (pending) return;
+  if (running) chip("Stop", () => send("", "stop"));
+  else { chip("Book tomorrow's Tatkal", () => send(TASK), true); chip("Check readiness", refreshState); }
+}
+
+function zoom(src) { $("zoomImg").src = src; $("zoom").showModal(); }
+$("zoom").onclick = () => $("zoom").close();
+
+function facts(text) {
+  const parts = text.split("What the page shows right now:");
+  return { about: parts[0].replace(/^Task:.*\n/, "").replace("The agent is about to: ", "").trim(), page: (parts[1] || "").trim() };
+}
+
+function askCard(e) {
+  pending = e.ask_id;
+  let node;
+  if (e.kind === "approval") {
+    const f = facts(e.text);
+    const amount = (f.page.match(/(₹|Rs\.?|INR)\s?[\d,]+(\.\d+)?/) || [""])[0];
+    node = el(`<div class="box ticket"><div class="main">
+        <div class="kicker">Ready to pay</div>
+        <h2 style="margin:0 0 6px">${amount ? esc(amount) : "Approve this payment?"}</h2>
+        <p>${esc(f.about)}</p>
+        <pre class="facts">${esc(f.page || "No fare lines found on the page. Check the screenshot.")}</pre>
+        ${e.image ? `<img src="${esc(e.image)}" alt="The page right now" style="margin-top:10px;border:2px solid #17251F;border-radius:10px;max-width:100%;cursor:zoom-in">` : ""}
+      </div><div class="stub"><div class="bars"></div>
+        <button class="btn go" data-a="Approve payment">Approve payment</button>
+        <button class="btn" data-a="no">Not yet</button></div></div>`);
+  } else {
+    node = el(`<div class="box ask"><div class="kicker">Quick question</div><p>${esc(e.text)}</p>
+      ${e.image ? `<img src="${esc(e.image)}" alt="The screen right now">` : ""}
+      <div class="btns"><button class="btn" data-a="yes">Yes</button><button class="btn" data-a="no">No</button>
+      <span class="meta" style="align-self:center">or type your answer below</span></div></div>`);
+  }
+  node.querySelectorAll("img").forEach(i => i.onclick = () => zoom(i.src));
+  node.querySelectorAll("[data-a]").forEach(b => b.onclick = () => send(b.dataset.a));
+  asks[e.ask_id] = node;
+  add(node);
+  setPill("ask", e.kind === "approval" ? "Needs your OK" : "Needs you");
+  chime();
+  chips();
+  $("input").focus();
+}
+
+function answered(e) {
+  const node = asks[e.ask_id];
+  if (node) {
+    node.querySelectorAll("button").forEach(b => b.disabled = true);
+    node.insertAdjacentHTML("beforeend", `<div class="receipt" style="padding:0 16px 12px">Answered “${esc(e.answer)}”${e.by !== "app" ? " on " + esc(e.by) : ""}.</div>`);
+  }
+  pending = null;
+  setPill(running ? "busy" : "", running ? "Working" : "Ready");
+  chips();
+}
+
+function doneCard(e) {
+  const pnr = (e.summary.match(/\b\d{10}\b/) || [""])[0];
+  const asked = e.handoffs === 0 ? "I didn't need to ask you anything." :
+    `I asked you ${e.handoffs === 1 ? "once" : e.handoffs + " times"}.`;
+  const node = el(e.success && pnr
+    ? `<div class="box ticket done"><div class="main"><div class="kicker">Booked</div><div class="pnr">PNR ${esc(pnr)}</div>
+         <p>${esc(e.summary)}</p><div class="receipt">${asked} Proof is saved in runs/${esc(e.run || "")}.</div></div>
+         <div class="stub"><div class="bars"></div><a class="btn" href="/files/${esc(e.run)}/report.html" target="_blank">Replay run</a></div></div>`
+    : `<div class="box done ${e.success ? "ask" : "fail"}"><div class="kicker">${e.success ? "Finished" : "Stopped"}</div>
+         <p>${esc(e.summary)}</p><div class="receipt" style="color:inherit">${asked}</div>
+         ${e.run ? `<div class="btns" style="margin-top:8px"><a class="btn" href="/files/${esc(e.run)}/report.html" target="_blank">Replay run</a></div>` : ""}</div>`);
+  add(node);
+}
+
+function live(e) {
+  if (e.shot) {
+    const s = $("screen"); s.classList.remove("empty"); s.textContent = "";
+    s.style.backgroundImage = `url("${e.shot}")`; s.dataset.src = e.shot;
+  }
+  if (e.say) $("now").textContent = e.say;
+  $("live").classList.toggle("waiting", !!e.waiting);
+  $("meta").textContent = e.index ? `Step ${e.index}${e.url ? " · " + new URL(e.url, location.href).hostname : ""}` : "";
+}
+$("screen").onclick = () => $("screen").dataset.src && zoom($("screen").dataset.src);
+$("stop").onclick = () => send("", "stop");
+
+function handle(e) {
+  switch (e.type) {
+    case "say": guard(e.text, e.system && /^\(reminder\)/.test(e.text)); break;
+    case "user": me(e.text); break;
+    case "status":
+      running = e.state === "running";
+      $("stop").hidden = !running;
+      if (running) { stepCount = 0; setPill("busy", "Working"); guard(`On it: ${e.task}`); }
+      else if (!pending) setPill("", "Ready");
+      chips(); break;
+    case "thinking": if (e.shot) live({ shot: e.shot, index: e.index }); break;
+    case "step": live(e); if (e.say) guard(e.say); break;
+    case "ask": askCard(e); break;
+    case "answered": answered(e); break;
+    case "done":
+      running = false; $("stop").hidden = true; $("live").classList.remove("waiting");
+      doneCard(e); setPill("", e.success ? "Done" : "Stopped"); chips(); refreshState(); break;
+  }
+}
+
+// The server echoes "user" events, so typed text is shown once, from the event.
+$("form").onsubmit = ev => {
+  ev.preventDefault();
+  const v = $("input").value.trim(); if (!v) return;
+  $("input").value = ""; send(v);
+};
+
+function connect() {
+  const es = new EventSource(`/events?token=${encodeURIComponent(token)}`);
+  es.onopen = () => { if (!pending) setPill(running ? "busy" : "", running ? "Working" : "Ready"); };
+  es.onmessage = m => handle(JSON.parse(m.data));
+  es.onerror = () => { setPill("ask", "Reconnecting…"); es.close(); log.innerHTML = ""; lastSay = ""; setTimeout(connect, 2000); };
+}
+
+function pad(n) { return String(n).padStart(2, "0"); }
+function tick() {
+  const [h, m, s] = countdownTo.split(":").map(Number);
+  const now = new Date(), t = new Date(now); t.setHours(h, m || 0, s || 0, 0);
+  let left = Math.round((t - now) / 1000);
+  if (left < 0) { $("countLabel").textContent = `Window opened at ${countdownTo.slice(0, 5)}`; left = 0; }
+  else $("countLabel").textContent = `Tatkal opens at ${countdownTo.slice(0, 5)} · in`;
+  $("hh").textContent = pad(Math.floor(left / 3600)); $("mm").textContent = pad(Math.floor(left % 3600 / 60)); $("ss").textContent = pad(left % 60);
+}
+
+async function refreshState() {
+  try {
+    const r = await fetch(`/api/state?token=${encodeURIComponent(token)}`); if (!r.ok) return;
+    const st = await r.json();
+    if (/^\d{1,2}:\d{2}/.test(st.countdown_to || "")) countdownTo = st.countdown_to.length === 5 ? st.countdown_to + ":00" : st.countdown_to;
+    const bad = st.checks.filter(c => !c.ok);
+    $("ready").innerHTML = bad.length === 0 ? `<span class="ok">Everything is ready</span>`
+      : `<span class="ok">${st.checks.length - bad.length} of ${st.checks.length} ready</span>` +
+        bad.map(c => `<span class="bad" title="${esc(c.fix)}">${esc(c.name)}</span>`).join("");
+  } catch (_) {}
+}
+
+let audio;
+function chime() {
+  try {
+    audio = audio || new AudioContext();
+    const o = audio.createOscillator(), g = audio.createGain();
+    o.frequency.value = 660; o.connect(g); g.connect(audio.destination);
+    g.gain.setValueAtTime(.12, audio.currentTime); g.gain.exponentialRampToValueAtTime(.001, audio.currentTime + .6);
+    o.start(); o.stop(audio.currentTime + .6);
+  } catch (_) {}
+}
+
+chips(); connect(); refreshState(); tick();
+setInterval(tick, 1000); setInterval(refreshState, 30000);
+</script>
+</body>
+</html>
