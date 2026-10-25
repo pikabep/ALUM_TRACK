@@ -1,3 +1,13 @@
+---
+title: Skilled Hands
+emoji: 🚆
+colorFrom: yellow
+colorTo: green
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # Skilled Hands
 
 One generic computer-use agent ("Guard") plus a folder of skills. It sees the screen (screenshots plus page DOM),
@@ -40,6 +50,11 @@ Allow Python through the Windows firewall when asked. Without it, Guard asks you
 ## Any other task
 `scripts\app.bat` opens the chat. Type a task, e.g. "make a folder on the Desktop called notes and save today's
 date in it". Or: `python -m harness run "..."`.
+
+## Online demo (Hugging Face Spaces)
+The header above makes this repo a Docker Space. Create a Space (SDK: Docker), push this repo to it, and add the
+secrets `GEMINI_API_KEY` and `APP_TOKEN` in the Space settings. Open `https://<user>-<space>.hf.space/#<APP_TOKEN>`.
+The browser is headless there and there is no desktop, so the real booking still runs on the laptop.
 
 ## Tests
 `.venv-win\Scripts\python -m pytest -q tests/test_loop.py tests/test_gate.py tests/test_server.py`
