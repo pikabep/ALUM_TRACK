@@ -37,8 +37,10 @@ def test_app_approval_roundtrip_and_inbox(tmp_path, monkeypatch):
     kinds = [e["type"] for e in bus._history]
     ask = next(e for e in bus._history if e["type"] == "ask")
     assert ask["kind"] == "approval" and ask["image"].endswith(".png") and "answered" in kinds
-    assert httpx.get(base + ask["image"]).status_code == 200
-    assert httpx.get(f"{base}/files/../../etc/passwd").status_code == 404
+    assert httpx.get(base + ask["image"]).status_code == 403                       # screenshots need the token
+    assert httpx.get(base + ask["image"] + "?token=t0k").status_code == 200
+    assert httpx.get(base + ask["image"], cookies={"sh_token": "t0k"}).status_code == 200
+    assert httpx.get(f"{base}/files/../../etc/passwd?token=t0k").status_code == 404
 
     # history is replayed to a client that connects late
     with httpx.stream("GET", f"{base}/events?token=t0k", timeout=5) as r:

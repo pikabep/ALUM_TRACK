@@ -47,7 +47,7 @@ def build_agent(cfg: dict, bus=None, inbox=None, channels: list | None = None):
     hands = Hands(
         shell=ShellHand(confirm=lambda q: handoff.approve(q)),
         files=FileHand(),
-        browser=BrowserHand(profile_dir=b.get("profile_dir", "~/.harness/browser-profile"),
+        browser=BrowserHand(profile_dir=os.environ.get("HARNESS_PROFILE") or b.get("profile_dir", "~/.harness/browser-profile"),
                             # HARNESS_HEADLESS=1 (servers such as Render): bundled Chromium, no window
                             channel=None if server else (b.get("channel") or None),
                             cdp_url=b.get("cdp_url") or None,
